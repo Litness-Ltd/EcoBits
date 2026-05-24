@@ -5,6 +5,7 @@ import com.willfp.eco.util.StringUtils
 import com.willfp.eco.util.savedDisplayName
 import com.willfp.ecobits.currencies.Currencies
 import com.willfp.ecobits.currencies.Currency
+import com.willfp.ecobits.currencies.TransactionType
 import com.willfp.ecobits.currencies.adjustBalance
 import com.willfp.ecobits.currencies.decimalFormat
 import com.willfp.ecobits.currencies.decimalFormatShort
@@ -15,6 +16,7 @@ import com.willfp.ecobits.currencies.numOfDecimals
 import com.willfp.ecobits.plugin
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 
 class CommandTake(
@@ -77,7 +79,7 @@ class CommandTake(
             return
         }
 
-        player.adjustBalance(currency, -amount)
+        player.adjustBalance(currency, -amount, TransactionType.TAKE, sender.name, (sender as? Player)?.uniqueId)
 
         sender.sendMessage(
             plugin.langYml.getMessage("took-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)

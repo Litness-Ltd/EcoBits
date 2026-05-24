@@ -1,6 +1,7 @@
 package com.willfp.ecobits.integrations
 
 import com.willfp.ecobits.currencies.Currency
+import com.willfp.ecobits.currencies.TransactionType
 import com.willfp.ecobits.currencies.adjustBalance
 import com.willfp.ecobits.currencies.formatWithExtension
 import com.willfp.ecobits.currencies.getBalance
@@ -129,7 +130,7 @@ class IntegrationVault(
             )
         }
 
-        player.adjustBalance(currency, -amount.toBigDecimal())
+        player.adjustBalance(currency, -amount.toBigDecimal(), TransactionType.VAULT)
 
         return EconomyResponse(
             amount,
@@ -176,7 +177,7 @@ class IntegrationVault(
             }
         }
 
-        player.adjustBalance(currency, amount.toBigDecimal())
+        player.adjustBalance(currency, amount.toBigDecimal(), TransactionType.VAULT)
         return EconomyResponse(
             amount,
             player.getBalance(currency).toDouble(),

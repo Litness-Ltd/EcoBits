@@ -24,6 +24,8 @@ import org.bukkit.plugin.ServicePriority
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.time.Instant
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.math.floor
 import kotlin.math.log10
@@ -279,16 +281,52 @@ fun OfflinePlayer.getBalance(currency: Currency): BigDecimal {
     return this.profile.read(currency.key)
 }
 
-fun OfflinePlayer.setBalance(currency: Currency, value: BigDecimal) {
+fun OfflinePlayer.setBalance(
+    currency: Currency,
+    value: BigDecimal,
+    type: TransactionType = TransactionType.SYSTEM,
+    actorName: String? = null,
+    actorUUID: UUID? = null,
+    transactionId: String = UUID.randomUUID().toString()
+) {
+    val oldBalance = this.getBalance(currency)
+
     val coerced = if (currency.max == null) value.coerceAtLeast(BigDecimal.ZERO)
     else value.coerceIn(BigDecimal.ZERO..currency.max)
 
-    this.profile.write(
-        currency.key,
-        coerced
+    this.profile.write(currency.key, coerced)
+
+    val delta = coerced - oldBalance
+    val sign = if (delta >= BigDecimal.ZERO) "+" else ""
+    val actorSuffix = if (actorName != null) " | by $actorName" else ""
+    plugin.logger.info(
+        "[$type] ${this.name ?: this.uniqueId} | ${currency.id} | $oldBalance -> $coerced ($sign$delta)$actorSuffix"
+    )
+
+    TransactionLogger.log(
+        TransactionEntry(
+            id = transactionId,
+            timestamp = Instant.now(),
+            type = type,
+            playerUUID = this.uniqueId,
+            playerName = this.name ?: "unknown",
+            currencyId = currency.id,
+            delta = delta,
+            oldBalance = oldBalance,
+            newBalance = coerced,
+            actorUUID = actorUUID,
+            actorName = actorName
+        )
     )
 }
 
-fun OfflinePlayer.adjustBalance(currency: Currency, by: BigDecimal) {
-    this.setBalance(currency, this.getBalance(currency) + by)
+fun OfflinePlayer.adjustBalance(
+    currency: Currency,
+    by: BigDecimal,
+    type: TransactionType = TransactionType.SYSTEM,
+    actorName: String? = null,
+    actorUUID: UUID? = null,
+    transactionId: String = UUID.randomUUID().toString()
+) {
+    this.setBalance(currency, this.getBalance(currency) + by, type, actorName, actorUUID, transactionId)
 }

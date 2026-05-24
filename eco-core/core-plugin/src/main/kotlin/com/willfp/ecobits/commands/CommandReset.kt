@@ -9,11 +9,13 @@ import com.willfp.ecobits.currencies.decimalFormat
 import com.willfp.ecobits.currencies.decimalFormatShort
 import com.willfp.ecobits.currencies.format
 import com.willfp.ecobits.currencies.formatShort
+import com.willfp.ecobits.currencies.TransactionType
 import com.willfp.ecobits.currencies.setBalance
 import com.willfp.ecobits.plugin
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 
 class CommandReset(
@@ -59,7 +61,7 @@ class CommandReset(
     }
 
     private fun resetPlayerCurrency(sender: CommandSender, player: OfflinePlayer, currency: Currency) {
-        player.setBalance(currency, currency.default)
+        player.setBalance(currency, currency.default, TransactionType.RESET, sender.name, (sender as? Player)?.uniqueId)
 
         player.name?.let {
             sender.sendMessage(
@@ -78,8 +80,9 @@ class CommandReset(
     private fun resetAllPlayersCurrency(sender: CommandSender, args: List<String>) {
         val currency = determineCurrency(sender, args) ?: return
 
+        val actorUUID = (sender as? Player)?.uniqueId
         Bukkit.getOfflinePlayers().forEach { player ->
-            player.setBalance(currency, currency.default)
+            player.setBalance(currency, currency.default, TransactionType.RESET, sender.name, actorUUID)
         }
 
         sender.sendMessage(

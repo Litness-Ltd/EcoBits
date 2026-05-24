@@ -11,10 +11,12 @@ import com.willfp.ecobits.currencies.format
 import com.willfp.ecobits.currencies.formatShort
 import com.willfp.ecobits.currencies.hasDecimals
 import com.willfp.ecobits.currencies.numOfDecimals
+import com.willfp.ecobits.currencies.TransactionType
 import com.willfp.ecobits.currencies.setBalance
 import com.willfp.ecobits.plugin
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 
 class CommandSet(
@@ -77,7 +79,7 @@ class CommandSet(
             return
         }
 
-        player.setBalance(currency, amount)
+        player.setBalance(currency, amount, TransactionType.SET, sender.name, (sender as? Player)?.uniqueId)
 
         sender.sendMessage(
             plugin.langYml.getMessage("set-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)

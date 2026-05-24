@@ -5,6 +5,7 @@ import com.willfp.eco.util.StringUtils
 import com.willfp.eco.util.savedDisplayName
 import com.willfp.ecobits.currencies.Currencies
 import com.willfp.ecobits.currencies.Currency
+import com.willfp.ecobits.currencies.TransactionType
 import com.willfp.ecobits.currencies.adjustBalance
 import com.willfp.ecobits.currencies.decimalFormat
 import com.willfp.ecobits.currencies.decimalFormatShort
@@ -19,6 +20,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import java.math.BigDecimal
+import java.util.UUID
 
 class CommandPay(
     private val currency: Currency? = null
@@ -92,8 +94,9 @@ class CommandPay(
             }
         }
 
-        recipient.adjustBalance(currency, amount)
-        player.adjustBalance(currency, -amount)
+        val txId = UUID.randomUUID().toString()
+        recipient.adjustBalance(currency, amount, TransactionType.PAY, player.name, player.uniqueId, txId)
+        player.adjustBalance(currency, -amount, TransactionType.PAY, player.name, player.uniqueId, txId)
 
         // Send a message to recipient if connected
         if (recipient.isOnline) {

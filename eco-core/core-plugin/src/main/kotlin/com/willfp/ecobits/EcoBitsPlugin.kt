@@ -7,6 +7,7 @@ import com.willfp.eco.util.ClassUtils
 import com.willfp.ecobits.commands.CommandEcoBits
 import com.willfp.ecobits.currencies.Currencies
 import com.willfp.ecobits.currencies.EcoBitsTopPlaceholder
+import com.willfp.ecobits.currencies.TransactionLogger
 import com.willfp.ecobits.integrations.IntegrationVault
 
 internal lateinit var plugin: EcoBitsPlugin
@@ -32,6 +33,10 @@ class EcoBitsPlugin : EcoPlugin() {
     override fun handleEnable() {
         if (this.configYml.getBool("leaderboard.enabled"))
             EcoBitsTopPlaceholder.register()
+    }
+
+    override fun handleDisable() {
+        TransactionLogger.shutdown()
     }
 
     override fun handleReload() {

@@ -29,10 +29,10 @@ class PriceFactoryCurrency(
             player.getBalance(currency).toDouble() >= getValue(player, multiplier)
 
         override fun pay(player: Player, multiplier: Double) =
-            player.adjustBalance(currency, -getValue(player, multiplier).toBigDecimal())
+            player.adjustBalance(currency, -getValue(player, multiplier).toBigDecimal(), TransactionType.PRICE)
 
         override fun giveTo(player: Player, multiplier: Double) =
-            player.adjustBalance(currency, getValue(player, multiplier).toBigDecimal())
+            player.adjustBalance(currency, getValue(player, multiplier).toBigDecimal(), TransactionType.PRICE)
 
         override fun getValue(player: Player, multiplier: Double) =
             xp(baseContext.copyWithPlayer(player)) * getMultiplier(player) * multiplier
