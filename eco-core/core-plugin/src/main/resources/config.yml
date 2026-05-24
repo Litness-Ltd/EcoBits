@@ -64,3 +64,24 @@ currencies:
     commands: # A list of commands dedicated to this currency (for easier paying, checking balance, etc.)
       - crystals
       - ecocrystals
+
+# Transaction log settings.
+# Every balance change (give, take, set, pay, vault, etc.) is recorded here.
+transaction-log:
+  # Backend to use for the transaction log.
+  # Options:
+  #   mariadb  - write to a MariaDB / MySQL database (recommended)
+  #   csv      - write to daily CSV files in plugins/EcoBits/logs/  (legacy)
+  #   none     - disable transaction logging entirely
+  backend: csv
+
+  # ── MariaDB / MySQL connection (only used when backend: mariadb) ──────────────
+  host: localhost
+  port: 3306
+  database: ecobits
+  user: root
+  password: ""
+  # Maximum number of pooled connections.
+  connections: 5
+  # Prefix applied to every table name created by EcoBits.
+  table-prefix: "ecobits_"

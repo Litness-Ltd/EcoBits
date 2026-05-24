@@ -11,6 +11,10 @@ softdepend:
   - libreforge
   - Vault
 
+libraries:
+  - com.zaxxer:HikariCP:7.0.2
+  - org.mariadb.jdbc:mariadb-java-client:3.5.8
+
 commands:
   ecobits:
     description: Base Command

@@ -34,6 +34,8 @@ class EcoBitsPlugin : EcoPlugin() {
     override fun handleEnable() {
         if (this.configYml.getBool("leaderboard.enabled"))
             EcoBitsTopPlaceholder.register()
+
+        TransactionLogger.initialize(this.configYml)
     }
 
     override fun handleDisable() {

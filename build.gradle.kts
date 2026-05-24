@@ -45,6 +45,15 @@ allprojects {
         compileOnly("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
         compileOnly("me.clip:placeholderapi:2.11.7")
+
+        // Exposed ORM – bundled inside eco's server JAR (implementation dep there);
+        // declared compileOnly here so the Kotlin compiler sees the types.
+        compileOnly("org.jetbrains.exposed:exposed-core:1.2.0")
+        compileOnly("org.jetbrains.exposed:exposed-jdbc:1.2.0")
+
+        // HikariCP – available at runtime via the Paper library loader declaration in
+        // plugin.yml; declared compileOnly so we can compile HikariConfig / HikariDataSource.
+        compileOnly("com.zaxxer:HikariCP:7.0.2")
     }
 
     java {
