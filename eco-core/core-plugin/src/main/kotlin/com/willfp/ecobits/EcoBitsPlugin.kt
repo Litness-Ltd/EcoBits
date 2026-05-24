@@ -5,6 +5,7 @@ import com.willfp.eco.core.bstats.EcoMetricsChart
 import com.willfp.eco.core.command.impl.PluginCommand
 import com.willfp.eco.util.ClassUtils
 import com.willfp.ecobits.commands.CommandEcoBits
+import com.willfp.ecobits.commands.CommandPayStandalone
 import com.willfp.ecobits.currencies.Currencies
 import com.willfp.ecobits.currencies.EcoBitsTopPlaceholder
 import com.willfp.ecobits.currencies.TransactionLogger
@@ -45,7 +46,8 @@ class EcoBitsPlugin : EcoPlugin() {
 
     override fun loadPluginCommands(): List<PluginCommand> {
         return listOf(
-            CommandEcoBits
+            CommandEcoBits,
+            CommandPayStandalone
         )
     }
 

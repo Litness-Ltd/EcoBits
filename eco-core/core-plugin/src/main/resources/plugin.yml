@@ -15,6 +15,10 @@ commands:
   ecobits:
     description: Base Command
     permission: ecobits.command.ecobits
+  pay:
+    description: Pay another player a currency
+    permission: ecobits.command.pay
+    usage: /pay <player> <currency> <amount>
 
 permissions:
   ecobits.*:
